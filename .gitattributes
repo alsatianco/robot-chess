@@ -1,0 +1,6 @@
+# Store text files with LF line endings.
+* text=auto eol=lf
+
+# Keep binary files unchanged.
+*.png binary
+*.wasm binary
