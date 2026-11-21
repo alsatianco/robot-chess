@@ -1,0 +1,1611 @@
+/* Interface styles. The look borrows from the robots: dark glass panels like their screens, chunky white "ceramic" main buttons like the white team's shell, and the two team lights (cyan and orange) as the only accent colors. */
+:root {
+  --cyan: #25d9ff;
+  --orange: #ff8a2b;
+  --ink: #0c1220;
+  --glass: rgba(12, 17, 30, 0.76);
+  --glass-strong: rgba(10, 14, 26, 0.92);
+  --line: rgba(255, 255, 255, 0.12);
+  --text: #f3f6ff;
+  --muted: #aab7d4;
+  --ceramic: #f4f7fb;
+  --good: #5dffa0;
+  --warn: #ffd166;
+  --bad: #ff6b7d;
+  --radius: 18px;
+  --display: 'Unbounded Variable', 'Lexend Variable', system-ui, sans-serif;
+  --body: 'Lexend Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+#stage {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+  outline: none;
+}
+
+#ui {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--warn);
+  outline-offset: 2px;
+}
+
+.icon {
+  width: 1.25em;
+  height: 1.25em;
+  flex: none;
+}
+
+/* --- Boot screen ------------------------------------------------------------------------------------------ */
+#boot {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 18px;
+  background: var(--ink);
+  color: var(--muted);
+  transition: opacity 0.5s ease;
+  z-index: 50;
+  text-align: center;
+  padding: 24px;
+}
+#boot.done {
+  opacity: 0;
+  pointer-events: none;
+}
+#boot.failed {
+  color: var(--text);
+}
+.boot-face {
+  width: 96px;
+  height: 72px;
+  border-radius: 22px;
+  background: #060a14;
+  border: 2px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+.boot-face span {
+  width: 14px;
+  height: 22px;
+  border-radius: 7px;
+  background: var(--cyan);
+  box-shadow: 0 0 18px var(--cyan);
+  animation: blink 2.6s infinite;
+}
+@keyframes blink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  96% {
+    transform: scaleY(0.1);
+  }
+}
+.noscript {
+  position: fixed;
+  inset: auto 0 0 0;
+  padding: 16px;
+  text-align: center;
+  background: var(--glass-strong);
+}
+
+/* --- Buttons and controls --------------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 16px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.07);
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.08s ease, background 0.15s ease, box-shadow 0.15s ease;
+  white-space: nowrap;
+}
+.btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.14);
+}
+.btn:active:not(:disabled) {
+  transform: translateY(2px);
+}
+.btn:disabled {
+  opacity: 0.38;
+  cursor: default;
+}
+.btn.small {
+  min-height: 40px;
+  padding: 0 12px;
+  font-size: 0.92rem;
+  border-radius: 12px;
+}
+.btn.icon-only {
+  padding: 0;
+  width: 46px;
+}
+.btn.icon-only.small {
+  width: 40px;
+}
+.btn.primary {
+  background: var(--ceramic);
+  color: var(--ink);
+  border-color: transparent;
+  font-weight: 600;
+  box-shadow: 0 3px 0 var(--cyan), 0 10px 26px rgba(37, 217, 255, 0.28);
+}
+.btn.primary:hover:not(:disabled) {
+  background: #ffffff;
+}
+.btn.primary:active:not(:disabled) {
+  box-shadow: 0 1px 0 var(--cyan), 0 6px 16px rgba(37, 217, 255, 0.24);
+}
+.btn.danger {
+  border-color: rgba(255, 138, 43, 0.6);
+  box-shadow: 0 3px 0 rgba(255, 138, 43, 0.55);
+}
+
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.choices.stack {
+  flex-direction: column;
+}
+.choice {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.choices.stack .choice {
+  min-height: 54px;
+  font-size: 1.05rem;
+  justify-content: flex-start;
+  padding: 0 18px;
+}
+.choice:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+.choice.active {
+  background: var(--ceramic);
+  color: var(--ink);
+  border-color: transparent;
+  font-weight: 600;
+  box-shadow: 0 2px 0 var(--cyan);
+}
+
+/* Preview of a board color choice: a two-by-two board. The colors come from the page as --light and --dark. */
+.swatch {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  background: conic-gradient(var(--dark) 90deg, var(--light) 90deg 180deg, var(--dark) 180deg 270deg, var(--light) 270deg);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4);
+}
+.choice.active .swatch {
+  box-shadow: 0 0 0 1px rgba(12, 18, 32, 0.4);
+}
+
+.switch {
+  position: relative;
+  flex: none;
+  width: 58px;
+  height: 34px;
+  border-radius: 17px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.switch .knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--muted);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+.switch.on {
+  background: rgba(37, 217, 255, 0.3);
+  border-color: var(--cyan);
+}
+.switch.on .knob {
+  transform: translateX(24px);
+  background: var(--ceramic);
+}
+
+.slider {
+  width: min(220px, 44vw);
+  accent-color: var(--cyan);
+  height: 34px;
+}
+
+.team-dot {
+  display: inline-block;
+  flex: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+.team-dot.team-w {
+  background: var(--ceramic);
+  box-shadow: 0 0 0 3px rgba(37, 217, 255, 0.85);
+}
+.team-dot.team-b {
+  background: #262b36;
+  box-shadow: 0 0 0 3px rgba(255, 138, 43, 0.9);
+}
+
+/* --- Home menu -------------------------------------------------------------------------------------------- */
+.menu {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(340px, 470px) minmax(0, 1fr);
+  pointer-events: none;
+}
+.menu-panel {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: calc(28px + var(--safe-top)) 28px calc(24px + var(--safe-bottom)) calc(28px + var(--safe-left));
+  background: linear-gradient(90deg, rgba(8, 12, 24, 0.9), rgba(8, 12, 24, 0.72) 78%, rgba(8, 12, 24, 0));
+  overflow-y: auto;
+}
+.menu-stage {
+  pointer-events: none;
+}
+.logo {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(2.5rem, 5.2vw, 4rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  display: flex;
+  flex-direction: column;
+}
+.logo-a {
+  color: var(--ceramic);
+  text-shadow: 0 0 28px rgba(37, 217, 255, 0.55);
+}
+.logo-b {
+  color: #20242e;
+  -webkit-text-stroke: 1.5px var(--orange);
+  text-shadow: 0 0 26px rgba(255, 138, 43, 0.55);
+}
+.tagline {
+  color: var(--muted);
+  max-width: 34ch;
+}
+/* The way back into a game that was left unfinished, above the setup of a new game. It has the whole cyan outline of a chosen mode card: it is the thing that is "on" right now. */
+.continue-game {
+  justify-content: flex-start;
+  gap: 12px;
+  min-height: 56px;
+  padding: 8px 16px;
+  text-align: left;
+  background: rgba(37, 217, 255, 0.14);
+  border-color: var(--cyan);
+  box-shadow: inset 0 0 0 1px var(--cyan);
+}
+.continue-game:hover:not(:disabled) {
+  background: rgba(37, 217, 255, 0.22);
+}
+.continue-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+.continue-text strong {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 0.98rem;
+}
+.continue-text span {
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+.mode-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.mode-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.mode-card strong {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 0.98rem;
+}
+.mode-card span {
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.35;
+}
+.mode-card:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+.mode-card.active {
+  background: rgba(37, 217, 255, 0.14);
+  border-color: var(--cyan);
+  box-shadow: inset 0 0 0 1px var(--cyan);
+}
+/* A last card without a neighbor (the two-player mode is the fifth card) takes the whole row, so the grid has no empty corner. With the whole row to itself, its name and its text sit side by side, which keeps the menu short; where the row is too narrow for both, the text wraps under the name like in the other cards. */
+.mode-grid .mode-card:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 12px;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.field > label {
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+.level-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.level-value {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line);
+}
+.level-value strong {
+  font-family: var(--display);
+  font-weight: 600;
+}
+.level-value span {
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+.menu-panel > .btn.primary {
+  min-height: 60px;
+  font-family: var(--display);
+  font-size: 1.2rem;
+  margin-top: 4px;
+}
+.menu-links {
+  display: flex;
+  gap: 8px;
+}
+.menu-links .btn {
+  flex: 1;
+}
+/* A wide window that is not tall, such as a small laptop: the menu gets a little tighter in several places, so that with five mode cards it still fits the windows it fitted with four. Each step is small on purpose, so the menu looks the same at a glance. Windows that are shorter still use the compact layout further down, and the panel scrolls when it has to. */
+@media (orientation: landscape) and (min-width: 861px) and (min-height: 561px) and (max-height: 860px) {
+  .menu-panel {
+    gap: 13px;
+    padding-top: calc(22px + var(--safe-top));
+    padding-bottom: calc(18px + var(--safe-bottom));
+  }
+  .logo {
+    font-size: clamp(2.5rem, 5.2vw, 3.8rem);
+  }
+  .mode-card {
+    padding: 9px 14px;
+  }
+}
+
+/* --- Install offer ---------------------------------------------------------------------------------------- */
+/* The offer to install the game as an app sits in the top corner of the home menu and not in the menu itself, so the menu keeps its height on every screen. On a wide screen that corner is over the 3D scene, and the slot is placed against the whole menu screen. On an upright phone the panel fills the screen, so there the slot is placed inside the panel, next to the logo, and scrolls with it (see the portrait rules further down). An empty slot takes no room. */
+.install-slot {
+  position: absolute;
+  top: calc(20px + var(--safe-top));
+  right: calc(20px + var(--safe-right));
+}
+.install-slot .btn {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+/* The steps for iPhone and iPad: one row per step, with its number, the picture of the button to look for, and the words. */
+.install-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  counter-reset: install-step;
+}
+.install-steps li {
+  counter-increment: install-step;
+  display: grid;
+  grid-template-columns: 1.4em 28px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line);
+}
+.install-steps li::before {
+  content: counter(install-step);
+  font-family: var(--display);
+  font-weight: 600;
+  color: var(--muted);
+  text-align: center;
+}
+.install-steps .icon {
+  width: 28px;
+  height: 28px;
+  color: var(--cyan);
+}
+.install-note {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+/* --- In-game layout --------------------------------------------------------------------------------------- */
+.hud {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  gap: 10px;
+  padding: calc(12px + var(--safe-top)) calc(12px + var(--safe-right)) calc(12px + var(--safe-bottom)) calc(12px + var(--safe-left));
+  grid-template-columns: minmax(0, 1fr) clamp(300px, 27vw, 400px);
+  grid-template-rows: auto auto auto minmax(0, 1fr) auto auto;
+  grid-template-areas:
+    'top top'
+    'board bot'
+    'board coach'
+    'board moves'
+    'board actions'
+    'board you';
+}
+/* The dock holds the panels whose size changes while a game runs: the coach card or the lesson card, the move list and the action buttons. In the two wide layouts it has no box of its own, so the grid above places its panels one by one. On an upright screen it is a box with a height of its own (see "An upright screen" below). */
+.dock {
+  display: contents;
+}
+.hud > *,
+.dock > * {
+  pointer-events: auto;
+  min-width: 0;
+}
+.board-area {
+  grid-area: board;
+  pointer-events: none;
+}
+.topbar {
+  grid-area: top;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+.topbar > * {
+  pointer-events: auto;
+}
+.topbar .btn {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.chip {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 0 14px;
+  min-height: 46px;
+  align-items: center;
+  border-radius: 14px;
+  background: var(--glass);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.chip strong {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+.chip span {
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+.opening {
+  flex: 1;
+  min-width: 0;
+  pointer-events: none;
+  color: var(--text);
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
+}
+
+.playerbar,
+.coach,
+.moves,
+.actions,
+.tutorial-card {
+  background: var(--glass);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+}
+.playerbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 6px 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.playerbar:empty,
+.actions:empty,
+.moves:empty {
+  display: none;
+}
+.bar-top {
+  grid-area: bot;
+}
+.bar-bottom {
+  grid-area: you;
+}
+/* The side to move: the whole outline of its bar takes the team's light color and the team dot lights up, like a robot that powers on. The team itself is shown by the dot alone, so an idle bar has no color of its own. */
+.playerbar.active[data-team='w'] {
+  border-color: var(--cyan);
+  box-shadow: inset 0 0 0 1px var(--cyan);
+}
+.playerbar.active[data-team='b'] {
+  border-color: var(--orange);
+  box-shadow: inset 0 0 0 1px var(--orange);
+}
+.playerbar.active .team-dot.team-w {
+  box-shadow: 0 0 0 3px var(--cyan), 0 0 10px 4px rgba(37, 217, 255, 0.55);
+}
+.playerbar.active .team-dot.team-b {
+  box-shadow: 0 0 0 3px var(--orange), 0 0 10px 4px rgba(255, 138, 43, 0.55);
+}
+.playerbar .name {
+  font-weight: 600;
+  white-space: nowrap;
+}
+.captured {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  min-width: 0;
+  min-height: 22px;
+}
+.cap {
+  width: 19px;
+  height: 19px;
+  margin-right: -5px;
+}
+.cap.team-w,
+.promo-icon.team-w {
+  color: var(--ceramic);
+  filter: drop-shadow(0 0 2px rgba(37, 217, 255, 0.9));
+}
+.cap.team-b,
+.promo-icon.team-b {
+  color: #3a404d;
+  filter: drop-shadow(0 0 2px rgba(255, 138, 43, 0.95));
+}
+.balance {
+  margin-left: 12px;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+.clock {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  font-variant-numeric: tabular-nums;
+  padding: 4px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--muted);
+}
+.clock.running {
+  background: var(--ceramic);
+  color: var(--ink);
+}
+.clock.low {
+  color: var(--bad);
+}
+.clock.low.running {
+  background: var(--bad);
+  color: #1a0408;
+}
+
+/* Coach card */
+.coach,
+.tutorial-card {
+  grid-area: coach;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+}
+.coach-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.coach-face {
+  flex: none;
+  width: 60px;
+}
+.coach-face .screen {
+  fill: #060a14;
+  stroke: rgba(255, 255, 255, 0.2);
+  stroke-width: 1.5;
+}
+.coach-face .led {
+  fill: var(--cyan);
+  filter: drop-shadow(0 0 4px var(--cyan));
+}
+.coach-face .led.stroke {
+  fill: none;
+  stroke: var(--cyan);
+  stroke-width: 4.5;
+  stroke-linecap: round;
+}
+.coach-face .led.stroke.thin {
+  stroke-width: 3;
+}
+.coach-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.coach-text {
+  font-size: 1.02rem;
+  user-select: text;
+  -webkit-user-select: text;
+}
+.coach-text.idle {
+  color: var(--muted);
+  align-self: center;
+}
+.coach-detail {
+  color: var(--muted);
+  font-size: 0.9rem;
+  user-select: text;
+  -webkit-user-select: text;
+  overflow-wrap: anywhere;
+}
+/* Two-player game: whose move the coach card is about. The team dot shows the side, so the line needs no color of its own. */
+.coach-who {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding-left: 3px;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+.coach-who .team-dot {
+  width: 10px;
+  height: 10px;
+}
+.coach-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.stars {
+  display: flex;
+  gap: 2px;
+}
+.star {
+  width: 26px;
+  height: 26px;
+  color: rgba(255, 255, 255, 0.16);
+}
+.star.on {
+  color: var(--warn);
+  filter: drop-shadow(0 0 6px rgba(255, 209, 102, 0.7));
+}
+.rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  padding: 3px 10px 3px 6px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.07);
+  font-size: 0.92rem;
+}
+.rating .glyph {
+  font-family: var(--display);
+  font-weight: 700;
+  min-width: 1.4em;
+  text-align: center;
+}
+.rating .double {
+  display: inline-flex;
+}
+.rating .double .icon + .icon {
+  margin-left: -0.6em;
+}
+.rating .eval {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.tone-great {
+  color: var(--good);
+}
+.tone-good {
+  color: var(--cyan);
+}
+.tone-ok {
+  color: var(--text);
+}
+.tone-warn {
+  color: var(--warn);
+}
+.tone-bad {
+  color: var(--bad);
+}
+.rating strong {
+  color: var(--text);
+}
+.evalbar {
+  position: relative;
+  height: 18px;
+  border-radius: 9px;
+  overflow: hidden;
+  background: #232833;
+  border: 1px solid var(--line);
+}
+.evalbar-white {
+  height: 100%;
+  background: var(--ceramic);
+  transition: width 0.4s ease;
+}
+.evalbar span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #7d8aa8;
+  mix-blend-mode: difference;
+}
+.tutorial-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: baseline;
+}
+.tutorial-head strong {
+  font-family: var(--display);
+  font-weight: 600;
+}
+.tutorial-head span {
+  color: var(--muted);
+  font-size: 0.86rem;
+  white-space: nowrap;
+}
+.tutorial-note {
+  font-weight: 500;
+}
+
+/* Move list */
+.moves {
+  grid-area: moves;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+.move-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 10px 12px;
+  font-variant-numeric: tabular-nums;
+}
+.move-row {
+  display: grid;
+  grid-template-columns: 2.6em 1fr 1fr;
+  gap: 4px;
+  align-items: center;
+}
+.move-no {
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+.move {
+  min-height: 30px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+.move:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+.move.current {
+  background: var(--ceramic);
+  color: var(--ink);
+  font-weight: 600;
+}
+.empty-note {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.move-nav {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px;
+  border-top: 1px solid var(--line);
+}
+
+.actions {
+  grid-area: actions;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px;
+}
+/* Two buttons of the same width per row, so the gaps line up from row to row. A button that is left alone on the last row, or whose label does not fit in half a row, takes a whole row. The small side padding and icon gap let the longest label ("Angled view") still fit in half a row when the side column has its smallest width (300px, for example on a tablet held sideways). */
+.actions .btn {
+  flex: 1 1 calc(50% - 3px);
+  gap: 6px;
+  padding: 0 4px;
+}
+.hud.no-moves .moves {
+  visibility: hidden;
+}
+.hud.is-tutorial .playerbar,
+.hud.is-tutorial .coach,
+.hud.is-tutorial .moves,
+.hud.is-tutorial .actions {
+  display: none;
+}
+.hud:not(.has-coach):not(.is-tutorial) {
+  grid-template-areas:
+    'top top'
+    'board bot'
+    'board moves'
+    'board moves'
+    'board actions'
+    'board you';
+}
+
+.confirm-bar {
+  position: absolute;
+  left: 50%;
+  bottom: calc(22px + var(--safe-bottom));
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px 10px 18px;
+  border-radius: 18px;
+  background: var(--glass-strong);
+  border: 1px solid var(--cyan);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  z-index: 5;
+  font-weight: 500;
+}
+
+/* --- Dialogs ---------------------------------------------------------------------------------------------- */
+.modal-root {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.backdrop {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(4, 7, 14, 0.55);
+  pointer-events: auto;
+  animation: fade-in 0.15s ease;
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+.dialog {
+  width: min(460px, 100%);
+  max-height: min(86vh, 100%);
+  display: flex;
+  flex-direction: column;
+  background: var(--glass-strong);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  overflow: hidden;
+}
+.dialog.wide {
+  width: min(640px, 100%);
+}
+.dialog-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 16px 12px 22px;
+}
+.dialog-head h2 {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.2rem;
+  line-height: 1.25;
+}
+.dialog-body {
+  padding: 4px 22px 18px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.dialog-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 16px 16px;
+  border-top: 1px solid var(--line);
+}
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.settings h3 {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 0.86rem;
+  color: var(--cyan);
+  margin-top: 10px;
+}
+.setting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.setting-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 180px;
+  min-width: 0;
+}
+.setting-text strong {
+  font-weight: 500;
+}
+.setting-text span {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.promo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.promo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 6px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+}
+.promo:hover {
+  background: rgba(255, 255, 255, 0.13);
+  border-color: var(--cyan);
+}
+.promo-icon {
+  width: 56px;
+  height: 56px;
+}
+/* Wide enough for its three buttons in one row. */
+.dialog.gameover {
+  width: min(540px, 100%);
+}
+.gameover .dialog-head h2 {
+  font-size: 1.6rem;
+}
+.gameover.outcome-win {
+  border-color: var(--good);
+}
+.gameover-face {
+  display: grid;
+  place-items: center;
+}
+.gameover-face .coach-face {
+  width: 96px;
+}
+.reason {
+  font-weight: 500;
+}
+.cheer,
+.question + .hint {
+  color: var(--muted);
+}
+.question {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+.onboarding {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.stack-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.export-label {
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+.export-text {
+  width: 100%;
+  resize: none;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--text);
+  font: 0.82rem/1.4 ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* --- About ------------------------------------------------------------------------------------------------ */
+.about-dialog a {
+  color: var(--cyan);
+  text-underline-offset: 3px;
+}
+/* A profile link is one short word, such as "X", which is hard to hit with a finger. An unseen box around the word makes its tap area bigger, and the sentence does not move. The same holds for the "Licences" link. */
+.about-note a,
+.about-thanks a {
+  position: relative;
+}
+.about-note a::after,
+.about-thanks a::after {
+  content: '';
+  position: absolute;
+  inset: -8px -10px;
+}
+/* The sentence above the credits and, at the end of its line, the link to the licence texts. On a narrow screen the link moves to a line of its own. */
+.about-thanks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2px 12px;
+}
+.about-thanks a {
+  font-size: 0.85rem;
+}
+.about-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+/* A link row is as wide as the dialog, so it is easy to hit with a finger, and it shows the address that it opens. */
+.about-dialog .about-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+.about-link:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+.about-link-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.about-link-text strong,
+.credit-name strong {
+  font-weight: 500;
+}
+.about-link-text span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  overflow-wrap: anywhere;
+}
+.about-link .icon {
+  color: var(--muted);
+}
+.credits {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.credit {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.credit-name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 8px;
+  min-width: 0;
+}
+.credit-name span,
+.credit-licence,
+.about-note {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.credit-licence {
+  flex: none;
+}
+
+/* --- Toasts ----------------------------------------------------------------------------------------------- */
+.toasts {
+  position: absolute;
+  left: 50%;
+  bottom: calc(20px + var(--safe-bottom));
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: min(560px, calc(100% - 24px));
+  pointer-events: none;
+  z-index: 20;
+}
+.toast {
+  pointer-events: auto;
+  padding: 10px 16px;
+  border-radius: 14px;
+  background: var(--glass-strong);
+  border: 1px solid currentColor;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+.toast span {
+  color: var(--text);
+}
+
+/* --- Small screens ------------------------------------------------------------------------------------------ */
+/* Three layouts share the page. A wide and tall window (a desktop, a tablet on its side) uses the layout above: the board on the left and a roomy column of panels on the right. An upright screen stacks the panels above and below the board. A wide window that is short or narrow (a phone on its side, a small browser window) keeps the board on the left and puts everything else, the top bar too, into one slim column. The choice goes by the shape of the window, not by its width alone: a phone on its side is wide but only about 360 to 430 pixels tall, so panels above and below the board would leave the board no room at all. */
+
+/* Shared by the two small layouts: slim panels, a move list of one line and action buttons with icons only. */
+@media (orientation: portrait), (orientation: landscape) and (max-height: 560px), (orientation: landscape) and (max-width: 860px) {
+  .hud {
+    gap: 8px;
+    padding: calc(8px + var(--safe-top)) calc(8px + var(--safe-right)) calc(8px + var(--safe-bottom)) calc(8px + var(--safe-left));
+  }
+  .playerbar {
+    min-height: 44px;
+  }
+  .moves {
+    flex-direction: row;
+    align-items: center;
+    max-height: 52px;
+  }
+  .move-list {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 6px 10px;
+    white-space: nowrap;
+  }
+  .move-row {
+    display: inline-flex;
+    gap: 2px;
+  }
+  .move-nav {
+    border-top: 0;
+    border-left: 1px solid var(--line);
+    padding: 6px;
+  }
+  .move-nav .btn:first-child,
+  .move-nav .btn:last-child {
+    display: none;
+  }
+  .hud.no-moves .moves {
+    display: none;
+  }
+  .actions {
+    flex-wrap: nowrap;
+  }
+  .actions .btn span {
+    display: none;
+  }
+  .actions .btn {
+    flex: 1 1 0;
+    padding: 0;
+  }
+  .dialog-foot .btn {
+    flex: 1 1 auto;
+  }
+  .coach-face {
+    width: 48px;
+  }
+  /* A card can not grow past the room that its layout gives it (see the two layouts below). When its text is longer, only the text scrolls: the buttons under it stay in sight, because the game waits for one of them ("Try again", "Keep going", "Next"). */
+  .coach,
+  .tutorial-card {
+    padding: 10px 12px;
+    overflow: hidden;
+  }
+  .coach > .coach-row,
+  .tutorial-card > .coach-row {
+    flex: 0 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+  }
+  .coach > :not(.coach-row),
+  .tutorial-card > :not(.coach-row) {
+    flex: none;
+  }
+  /* A text that is longer than its card fades out at the bottom, as a sign that there is more to scroll to. The interface sets the class while more text is below (see #markOverflow in ui.js). */
+  .coach-row.more-below {
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 30px), transparent);
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 30px), transparent);
+  }
+}
+
+/* An upright screen: board in the middle, panels above and below it. The home menu fills the screen. */
+/* The board must stay where it is while a game runs. Here the board gets the room that the other rows leave, so a row that grows with its text would make the board smaller, and the camera would then zoom out and back after every move: hard on the eyes, and a tap can land on the wrong square. So the height of every row depends on the size of the window only, never on what a panel says. The bars have one line. Everything that changes during a game is in the dock at the bottom, and the dock has a height of its own: a share of the screen in a coach game and in the tutorial, where a card needs room for its text, and the height of the move list and the buttons in the other games. Inside the dock the coach card starts at the top and grows downward, and the buttons stay at the bottom of the screen. When a text is longer than the room, it scrolls inside its card. */
+@media (orientation: portrait) {
+  .hud,
+  .hud:not(.has-coach):not(.is-tutorial) {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      'top'
+      'bot'
+      'board'
+      'you'
+      'dock';
+  }
+  /* The share is tuned on a phone of about 390 by 740 pixels, the room inside a browser: the usual coach card with a rating, two lines of text, a detail line and a button fits without scrolling, and the board keeps its full width. A taller dock would make the board smaller there. */
+  .hud.has-coach,
+  .hud.is-tutorial {
+    grid-template-rows: auto auto minmax(0, 1fr) auto clamp(200px, 36%, 320px);
+  }
+  .dock {
+    grid-area: dock;
+    display: flex;
+    flex-direction: column;
+    gap: inherit;
+    min-height: 0;
+    /* The free room between the card and the buttons shows the board's world, so a drag there turns the camera. */
+    pointer-events: none;
+  }
+  .dock > * {
+    flex: none;
+  }
+  /* The coach card takes the height of its text, up to all the room above the buttons. Its free room is below it, which keeps the move list and the buttons at the bottom. */
+  .coach {
+    flex: 0 1 auto;
+    min-height: 0;
+    margin-bottom: auto;
+  }
+  /* The lesson card is alone in the dock and sits at the bottom of the screen, so its "Next" button stays in one place from step to step. */
+  .tutorial-card {
+    flex: 0 1 auto;
+    min-height: 0;
+    margin-top: auto;
+  }
+  /* A game without the coach, where the dock is as tall as the move list and the buttons: the Beginner coach level hides the move list until the game is over, and its place is kept free meanwhile, so the board does not move when the list comes back. */
+  .hud.no-moves:not(.has-coach) .moves {
+    display: flex;
+    visibility: hidden;
+  }
+  /* Captured pieces that do not fit on one line go on a second line, as everywhere. Here the list keeps the height of one line and the second line uses the bar's own padding, so the bar does not get taller late in a game. A long list also gets smaller pieces. */
+  .captured {
+    height: 22px;
+    align-content: center;
+  }
+  .cap:nth-last-child(n + 9),
+  .cap:nth-last-child(n + 9) ~ .cap {
+    width: 15px;
+    height: 15px;
+    margin-right: -4px;
+  }
+  .cap:nth-last-child(n + 9) ~ .balance {
+    line-height: 1;
+  }
+  .menu {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .menu-panel {
+    position: relative;
+    padding: calc(20px + var(--safe-top)) 18px calc(20px + var(--safe-bottom));
+    background: rgba(8, 12, 24, 0.8);
+  }
+  /* The panel fills the screen here, so the install offer sits inside it: level with the logo, in the free corner to its right. */
+  .install-slot {
+    right: 18px;
+  }
+  .menu-stage {
+    display: none;
+  }
+}
+
+/* A wide window that is short or narrow: the board on the left gets the full height, and one slim column on the right holds the top bar and all panels. */
+@media (orientation: landscape) and (max-height: 560px), (orientation: landscape) and (max-width: 860px) {
+  .hud {
+    gap: 6px;
+    grid-template-columns: minmax(0, 1fr) clamp(260px, 40vw, 360px);
+    grid-template-rows: auto auto minmax(0, 1fr) auto auto auto;
+    grid-template-areas:
+      'board top'
+      'board bot'
+      'board coach'
+      'board moves'
+      'board actions'
+      'board you';
+  }
+  /* Without a coach card the move list sits under the bot's bar, and the free room is below it. */
+  .hud:not(.has-coach):not(.is-tutorial) {
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      'board top'
+      'board bot'
+      'board moves'
+      'board .'
+      'board actions'
+      'board you';
+  }
+  .topbar {
+    gap: 6px;
+  }
+  .topbar .btn,
+  .chip {
+    min-height: 40px;
+  }
+  .topbar .btn.icon-only {
+    width: 40px;
+  }
+  /* The mode name takes the room between the buttons. The level is already in the bot's bar, and the opening name has no room in a column this slim. */
+  .chip {
+    flex: 1;
+    min-width: 0;
+    padding: 0 12px;
+  }
+  .chip strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .chip span,
+  .opening {
+    display: none;
+  }
+  .playerbar {
+    min-height: 40px;
+    padding: 4px 12px;
+  }
+  /* The card takes the height it needs, up to all the room that is left in the column. */
+  .coach,
+  .tutorial-card {
+    align-self: start;
+    max-height: 100%;
+    gap: 8px;
+  }
+  .coach-face {
+    width: 44px;
+  }
+  .coach-text {
+    font-size: 0.96rem;
+  }
+  .coach-actions .btn.small {
+    min-height: 36px;
+  }
+  .moves {
+    max-height: 46px;
+  }
+  .actions {
+    padding: 6px;
+  }
+  .actions .btn {
+    min-height: 40px;
+    min-width: 0;
+  }
+  /* The home menu keeps its two columns, with a slimmer panel so the board still shows next to it. */
+  .menu {
+    grid-template-columns: minmax(300px, 46%) minmax(0, 1fr);
+  }
+  .menu-panel {
+    gap: 12px;
+    padding: calc(16px + var(--safe-top)) 18px calc(16px + var(--safe-bottom)) calc(18px + var(--safe-left));
+  }
+}
+
+/* --- Phones: panels make room while a coach game runs --------------------------------------------------------- */
+/* On a phone, upright or on its side, the board and the coach card need every pixel. Two panels step aside for them. The move list is the part a player can do without during a coach game, so it is hidden until the game is over; then the coach card is short, and the list comes back to look through the moves. And while the coach has stopped the game and waits for "Try again" or "Keep going", the row of action buttons is hidden, so the coach's words can be read without scrolling. The row is back as soon as the player answers, and nothing is lost meanwhile: no move can be made during the stop, and "Try again" is the undo. On an upright screen both changes happen inside the dock, whose height is fixed, so the board does not move. Only an upright screen that is both wide and tall (a tablet) has room in its dock for the card, the list and the buttons together. */
+@media (orientation: landscape) and (max-height: 560px), (orientation: portrait) and (max-height: 900px), (orientation: portrait) and (max-width: 500px) {
+  .hud.has-coach:not(.is-over) .moves {
+    display: none;
+  }
+  .hud.is-hold .actions {
+    display: none;
+  }
+}
+/* A small upright phone inside the browser's own bars: the bars, the card and the buttons are as slim as on a phone on its side, so the card shows more of its text in the dock. */
+@media (orientation: portrait) and (max-height: 640px) {
+  .hud {
+    gap: 6px;
+  }
+  .playerbar {
+    min-height: 40px;
+    padding: 4px 12px;
+  }
+  .coach,
+  .tutorial-card {
+    gap: 8px;
+  }
+  .coach-face {
+    width: 44px;
+  }
+  .coach-text {
+    font-size: 0.96rem;
+  }
+  .coach-actions .btn.small {
+    min-height: 36px;
+  }
+  .actions {
+    padding: 6px;
+  }
+  .actions .btn {
+    min-height: 40px;
+  }
+}
+
+/* The install steps keep their words on few lines on a narrow phone, so the three steps show without scrolling. */
+@media (max-width: 380px) {
+  .install-steps li {
+    grid-template-columns: 1.1em 24px minmax(0, 1fr);
+    gap: 10px;
+    padding: 10px 12px;
+  }
+  .install-steps .icon {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* The three buttons under Play must fit one row of a phone at the same width, so they get tighter there, and the smallest phones show only the words. */
+@media (max-width: 480px) {
+  .menu-links .btn {
+    padding: 0 6px;
+    gap: 6px;
+    font-size: 0.92rem;
+  }
+}
+@media (max-width: 350px) {
+  .menu-links .icon {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
