@@ -27,6 +27,7 @@ Thumbs.db
 *.swo
 *~
 
-# Keep Markdown notes local, except README.md
+# Keep Markdown notes local, except README.md and shared project guidance
 *.md
 !README.md
+!AGENTS.md
