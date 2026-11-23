@@ -1,6 +1,12 @@
 # Robot Chess
 
+![Robot Chess: ivory and dark robot pieces on the blue Meadow board, surrounded by grass and trees.](docs/media/robot-chess-poster-16x9.png)
+
 A 3D chess game for the browser, made for kids and teens. It plays real chess against a Stockfish bot, a coach explains every move, and the pieces are friendly robots built and animated in code. It is a static website: there is no server. The design brief is in `robot_chess.md`.
+
+![A six-second gameplay loop showing robot moves and glowing effects on the Meadow board.](docs/media/robot-chess-readme.gif)
+
+[Watch or download the full demo](docs/media/robot-chess-github.mp4) (62 seconds, MP4, 10 MB), including robot animations, the coach and the tutorial.
 
 ## Run it
 
